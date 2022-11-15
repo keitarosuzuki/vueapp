@@ -1,0 +1,25 @@
+算術プロパティ
+
+    <template>
+        <名前>
+    </template>
+
+    computed: {
+        名前 : function(){処理}
+        名前 : function(){処理}
+
+        ・・・必要なだけ用意・・・
+
+    }
+
+
+変数の作成
+
+    data: function(){
+        return {
+            hoge:'',
+        }
+    },
+    created: function(){
+        this.hoge = hoge
+    }

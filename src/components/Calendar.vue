@@ -1,80 +1,143 @@
 <template>
-    <div class="calendar">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">日</th>
-                    <th scope="col">月</th>
-                    <th scope="col">火</th>
-                    <th scope="col">水</th>
-                    <th scope="col">木</th>
-                    <th scope="col">金</th>
-                    <th scope="col">土</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td v-for="(date, index) in aryDate" 
-                        v-bind:key = index 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#exampleModal">{{date}}</td>
-                </tr>
-                <tr>
-                    <td v-for="(date, index) in aryDate2" 
-                        v-bind:key = index 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#exampleModal">{{date}}</td>
-                </tr>
-                <tr>
-                    <td v-for="(date, index) in aryDate3" 
-                        v-bind:key = index 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#exampleModal">{{date}}</td>
-                </tr>
-                <tr>
-                    <td v-for="(date, index) in aryDate4" 
-                        v-bind:key = index 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#exampleModal">{{date}}</td>
-                </tr>
-                <tr>
-                    <td v-for="(date, index) in aryDate5" 
-                        v-bind:key = index 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#exampleModal">{{date}}</td>
-                </tr>
-                <tr>
-                    <td v-for="(date, index) in aryDate6" 
-                        v-bind:key = index 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#exampleModal">{{date}}</td>
-                </tr>
-            </tbody>
-        </table>
+  <div class="content">
+    <h2>カレンダー{{ displayDate }}</h2>
+    <div class="button-area">
+      <button @click="prevMonth" class="button">前の月</button>
+      <button @click="nextMonth" class="button">次の月</button>
     </div>
+    <div class="calendar">
+      <div class="calendar-weekly">
+        <div class="calendar-youbi" v-for="n in 7" :key="n">
+          {{ youbi(n-1) }}
+        </div>
+      </div>
+      <div 
+        class="calendar-weekly"
+        v-for="(week, index) in calendars"
+        :key="index"
+      >
+        <div
+          class="calendar-daily"
+          :class="{outside: currentMonth !== day.month}"
+          v-for="(day, index) in week"
+          :key="index"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
+          <div class="calendar-day">
+            {{ day.day }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
-
 <script>
-/* eslint-disable */
-
+import moment from "moment";
 export default {
-  name: 'Calendar',
-  data: function() {
+  data() {
     return {
-      aryDate: [30,31,1,2,3,4,5],
-      aryDate2: [6,7,8,9,10,11,12],
-      aryDate3: [13,14,15,16,17,18,19],
-      aryDate4: [20,21,22,23,24,25,26],
-      aryDate5: [27,28,29,30,1,2,3],
-      aryDate6: [4,5,6,7,8,9,10],
-    }
+      currentDate: moment(),
+    };
   },
-  mounted() {
-      // イベントが発火するたびに
-      window.addEventListener("イベント名", 関数名) 
+  methods: {
+    getStartDate() {
+      let date = moment(this.currentDate);
+      date.startOf("month");
+      const youbiNum = date.day();
+      return date.subtract(youbiNum, "days");
+    },
+    getEndDate() {
+      let date = moment(this.currentDate);
+      date.endOf("month");
+      const youbiNum = date.day();
+      return date.add(6 - youbiNum, "days");
+    },
+    getCalendar() {
+      let startDate = this.getStartDate();
+      const endDate = this.getEndDate();
+      const weekNumber = Math.ceil(endDate.diff(startDate, "days") / 7);
 
-      // DOMが呼び込まれたときに一回だけ
-      this.関数名()
+      let calendars = [];
+      let calendarDate = this.getStartDate();
+
+      for (let week = 0; week < weekNumber; week++) {
+        let weekRow = [];
+        for (let day = 0;  day < 7; day++) {
+          weekRow.push({
+            day: calendarDate.get("date"),
+            month: calendarDate.format("YYYY-MM"),//追加
+          });
+          calendarDate.add(1, "days");
+        }
+        calendars.push(weekRow);
+      }
+      return calendars;
+    },
+    nextMonth() {
+      this.currentDate = moment(this.currentDate).add(1, "month");
+    },
+    prevMonth() {
+      this.currentDate = moment(this.currentDate).subtract(1, "month");
+    },
+    youbi(dayIndex) {
+      const week = ["日", "月", "火", "水", "木", "金", "土"];
+      return week[dayIndex];
+    },
   },
-}
+  computed: {
+    calendars() {
+      return this.getCalendar();
+    },
+    displayDate(){
+      return this.currentDate.format('YYYY[年]M[月]')
+    },
+    currentMonth(){
+      return this.currentDate.format('YYYY-MM')
+    },
+  },
+};
 </script>
+
+<style>
+.content{
+  margin:2em auto;
+  width:900px;
+}
+.button-area{
+  margin:0.5em 0;
+}
+.button{
+  padding:4px 8px;
+  margin-right:8px;
+}
+.calendar{
+  max-width:900px;
+  border-top:1px solid #E0E0E0;
+  font-size:0.8em;
+}
+.calendar-weekly{
+  display:flex;
+  border-left:1px solid #E0E0E0;
+  /* background-color: black; */
+}
+.calendar-daily{
+  flex:1;
+  min-height:125px;
+  border-right:1px solid #E0E0E0;
+  border-bottom:1px solid #E0E0E0;
+  margin-right:-1px;
+}
+.calendar-day{
+  text-align: center;
+}
+.calendar-youbi{
+  flex:1;
+  border-right:1px solid #E0E0E0;
+  margin-right:-1px;
+  text-align:center;
+}
+.outside{
+  background-color: #f7f7f7;
+}
+</style>
