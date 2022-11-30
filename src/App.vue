@@ -1,8 +1,8 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/input">未定。。</router-link>
+    <!-- <router-link to="/">Home</router-link> -->
+    <!-- <router-link to="/input">未定</router-link> -->
   </nav>
   <router-view/>
 </template>
@@ -16,9 +16,9 @@
   color: #2c3e50;
 }
 
-nav {
+/* nav {
   padding: 30px;
-}
+} */
 
 nav a {
   font-weight: bold;

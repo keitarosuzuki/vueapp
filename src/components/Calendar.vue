@@ -2,8 +2,20 @@
     <div class="content">
         <h2>{{ displayDate }}</h2>
         <div class="button-area">
-            <button @click="prevMonth" class="button">前の月</button>
-            <button @click="nextMonth" class="button">次の月</button>
+            <button
+                @click="prevMonth"
+                type="button"
+                class="btn btn-outline-dark hege"
+            >
+                前の月
+            </button>
+            <button
+                @click="nextMonth"
+                type="button"
+                class="btn btn-outline-dark"
+            >
+                次の月
+            </button>
         </div>
         <div class="calendar">
             <div class="calendar-weekly">
@@ -21,23 +33,62 @@
                     :class="{ outside: currentMonth !== day.month }"
                     v-for="(day, index) in week"
                     :key="index"
-                    data-bs-toggle="modal"
-                    data-bs-target="#staticBackdrop"
                 >
                     <div class="calendar-day">
                         {{ day.day }}
                     </div>
+                    <button
+                        v-if="currentMonth === day.month && day.flag === false"
+                        @click="viewCurrentDayModal($event)"
+                        type="button"
+                        class="btn btn-outline-secondary hogo"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"
+                    >
+                        登録
+                    </button>
+                    <button
+                        v-if="currentMonth === day.month && day.flag === true"
+                        @click="viewCurrentDayModal($event)"
+                        type="button"
+                        class="btn btn-success hogo btn-balance"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"
+                    >
+                        + {{ day.income }}
+                    </button>
+                    <button
+                        v-if="currentMonth === day.month && day.flag === true"
+                        @click="viewCurrentDayModal($event)"
+                        type="button"
+                        class="btn btn-warning btn-balance"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"
+                    >
+                        - {{ day.expence }}
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
+/* eslint-disable */
 import moment from "moment";
+import firebase from "firebase/compat/app";
+import "firebase/compat/database";
+// import { mapActions } from 'vuex';
+
 export default {
     data() {
         return {
             currentDate: moment(),
+            hogeM: "",
+            hoge: "",
+            huga: "",
+            hogeFlag: false,
+            hogeIncome: "0",
+            hogeExpence: "0",
         };
     },
     methods: {
@@ -64,10 +115,68 @@ export default {
             for (let week = 0; week < weekNumber; week++) {
                 let weekRow = [];
                 for (let day = 0; day < 7; day++) {
+                    // 処理
+                    if (
+                        this.hogeM.hasOwnProperty(
+                            calendarDate.format("YYYY-MM")
+                        )
+                    ) {
+                        this.hoge = calendarDate.format("YYYY-MM");
+                        if (
+                            this.hogeM[this.hoge].hasOwnProperty(
+                                calendarDate.get("date")
+                            )
+                        ) {
+                            this.huga = calendarDate.get("date");
+                            if (this.hogeM[this.hoge][this.huga].in) {
+                                let a = Object.values(
+                                    this.hogeM[this.hoge][this.huga].in
+                                );
+                                this.hogeIncome = a.reduce(function (
+                                    previousValue,
+                                    currentValue
+                                ) {
+                                    return (
+                                        Number(previousValue) +
+                                        Number(currentValue)
+                                    );
+                                });
+                            } else {
+                                this.hogeIncome = 0;
+                            }
+                            if (this.hogeM[this.hoge][this.huga].ex) {
+                                let b = Object.values(
+                                    this.hogeM[this.hoge][this.huga].ex
+                                );
+                                this.hogeExpence = b.reduce(function (
+                                    previousValue,
+                                    currentValue
+                                ) {
+                                    return (
+                                        Number(previousValue) +
+                                        Number(currentValue)
+                                    );
+                                });
+                            } else {
+                                this.hogeExpence = 0;
+                            }
+                            this.hogeFlag = true;
+                        }
+                    }
+
                     weekRow.push({
                         day: calendarDate.get("date"),
-                        month: calendarDate.format("YYYY-MM"), //追加
+                        month: calendarDate.format("YYYY-MM"),
+                        income: this.hogeIncome,
+                        expence: this.hogeExpence,
+                        flag: this.hogeFlag,
                     });
+
+                    this.hogeFlag = false;
+                    this.hoge = "";
+                    this.huga = "";
+                    this.hogeIncome = "";
+                    this.hogeExpence = "";
                     calendarDate.add(1, "days");
                 }
                 calendars.push(weekRow);
@@ -84,6 +193,13 @@ export default {
             const week = ["日", "月", "火", "水", "木", "金", "土"];
             return week[dayIndex];
         },
+        viewCurrentDayModal(event) {
+            let clickedDate = event.target.parentNode.children[0].textContent;
+            this.$store.dispatch("viewCurrentDayModal", {
+                currentYearMonth: this.displayDate,
+                currentDay: clickedDate,
+            });
+        },
     },
     computed: {
         calendars() {
@@ -95,6 +211,20 @@ export default {
         currentMonth() {
             return this.currentDate.format("YYYY-MM");
         },
+        currentMonthModal() {
+            return this.currentDate.format("M[月]");
+        },
+    },
+    mounted() {
+        firebase
+            .database()
+            .ref("huga")
+            .on("value", (snapshot) => {
+                this.hogeM = snapshot.val();
+                // this.$store.dispatch("allHoge", {
+                //     allMoney: snapshot.val(),
+                // });
+            });
     },
 };
 </script>
@@ -106,6 +236,9 @@ export default {
 }
 .button-area {
     margin: 0.5em 0;
+}
+.hege {
+    margin-right: 50px;
 }
 .button {
     padding: 4px 8px;
@@ -130,6 +263,15 @@ export default {
 }
 .calendar-day {
     text-align: center;
+}
+.btn {
+    width: 80px;
+}
+.hogo {
+    margin: 5px 0px 10px;
+}
+.btn-balance {
+    width: 100px;
 }
 .calendar-youbi {
     flex: 1;
