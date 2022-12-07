@@ -49,11 +49,11 @@
                     </button>
                     <button
                         v-if="currentMonth === day.month && day.flag === true"
-                        @click="viewCurrentDayModal($event)"
+                        @click="viewCurrentDayModal($event);hogedesu($event);"
                         type="button"
                         class="btn btn-success hogo btn-balance"
                         data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop"
+                        data-bs-target="#hoge"
                     >
                         + {{ day.income }}
                     </button>
@@ -63,7 +63,7 @@
                         type="button"
                         class="btn btn-warning btn-balance"
                         data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop"
+                        data-bs-target="#huga"
                     >
                         - {{ day.expence }}
                     </button>
@@ -77,7 +77,6 @@
 import moment from "moment";
 import firebase from "firebase/compat/app";
 import "firebase/compat/database";
-// import { mapActions } from 'vuex';
 
 export default {
     data() {
@@ -200,6 +199,10 @@ export default {
                 currentDay: clickedDate,
             });
         },
+        hogedesu(event) {
+            let income = event.target.textContent;
+            this.$store.dispatch("hogedesu", income);
+        }
     },
     computed: {
         calendars() {
@@ -221,9 +224,9 @@ export default {
             .ref("huga")
             .on("value", (snapshot) => {
                 this.hogeM = snapshot.val();
-                // this.$store.dispatch("allHoge", {
-                //     allMoney: snapshot.val(),
-                // });
+                this.$store.dispatch("allHoge", {
+                    allMoney: snapshot.val(),
+                });
             });
     },
 };

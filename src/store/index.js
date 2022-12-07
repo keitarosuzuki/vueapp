@@ -5,6 +5,7 @@ export default createStore({
     state: {
         textCurrentYearMonthDay: "",
         all: {},
+        indayo: "",
     },
     getters: {
         registYearMonth(state) {
@@ -24,11 +25,14 @@ export default createStore({
         },
     },
     mutations: {
-        viewCurrentDayModal(state, date) {
-            state.textCurrentYearMonthDay = date
+        viewCurrentDayModal(state, payload) {
+            state.textCurrentYearMonthDay = payload
         },
-        allHoge(state, allMoney) {
-            state.all = allMoney
+        allHoge(state, payload) {
+            state.all = payload
+        },
+        hogedesu(state, payload){
+            state.indayo = payload
         },
     },
     actions: {
@@ -40,6 +44,10 @@ export default createStore({
         allHoge({ commit }, { allMoney }) {
             commit('allHoge', allMoney)
         },
+        hogedesu({ commit }, income){
+            let a = income.replace(' + ', '');
+            commit('hogedesu', a)
+        }
     },
     modules: {
     }
