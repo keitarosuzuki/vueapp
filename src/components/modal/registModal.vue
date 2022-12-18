@@ -105,7 +105,7 @@
                                     >{{ title }}の金額を入力</label
                                 >
                             </form>
-                            <div class="input-group">
+                            <!-- <div class="input-group">
                                 <div class="form-floating">
                                     <input
                                         type="text"
@@ -130,7 +130,7 @@
                                         >👈 なんの？</label
                                     >
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -170,8 +170,6 @@
                         >
                             登録
                         </button>
-                        <!-- <button type="button" class="btn btn-danger">削除</button>
-                    <button type="button" class="btn btn-warning">修正</button> -->
                     </div>
                 </div>
             </div>
@@ -220,8 +218,8 @@ export default {
                 exInput6: "",
                 exInput7: "",
                 exInput8: "",
-                exInput9: "",
-                exInput10: "",
+                // exInput9: "",
+                // exInput10: "",
             },
         };
     },
@@ -230,6 +228,15 @@ export default {
             this.flagBalance = "";
             this.valInput = "";
             this.flagCheckInput = false;
+            this.exInputs["exInput0"] = ""
+            this.exInputs["exInput1"] = ""
+            this.exInputs["exInput2"] = ""
+            this.exInputs["exInput3"] = ""
+            this.exInputs["exInput4"] = ""
+            this.exInputs["exInput5"] = ""
+            this.exInputs["exInput6"] = ""
+            this.exInputs["exInput7"] = ""
+            this.exInputs["exInput8"] = ""
         },
         registerIncomeVal() {
             if (this.checkValInput(this.valInput)) {
@@ -265,6 +272,35 @@ export default {
                     });
             } else if (this.flagBalance == this.EXPENCE) {
                 // 新規登録 - 費用
+
+                if (!this.exInputs["exInput0"]) {
+                    this.exInputs["exInput0"] = 0;
+                }
+                if (!this.exInputs["exInput1"]) {
+                    this.exInputs["exInput1"] = 0;
+                }
+                if (!this.exInputs["exInput2"]) {
+                    this.exInputs["exInput2"] = 0;
+                }
+                if (!this.exInputs["exInput3"]) {
+                    this.exInputs["exInput3"] = 0;
+                }
+                if (!this.exInputs["exInput4"]) {
+                    this.exInputs["exInput4"] = 0;
+                }
+                if (!this.exInputs["exInput5"]) {
+                    this.exInputs["exInput5"] = 0;
+                }
+                if (!this.exInputs["exInput6"]) {
+                    this.exInputs["exInput6"] = 0;
+                }
+                if (!this.exInputs["exInput7"]) {
+                    this.exInputs["exInput7"] = 0;
+                }
+                if (!this.exInputs["exInput8"]) {
+                    this.exInputs["exInput8"] = 0;
+                }
+
                 firebase
                     .database()
                     .ref(
@@ -286,8 +322,8 @@ export default {
                         rent: this.exInputs["exInput6"],
                         trans: this.exInputs["exInput7"],
                         common: this.exInputs["exInput8"],
-                        advances: this.exInputs["exInput9"],
-                        reason: this.exInputs["exInput10"],
+                        // advances: this.exInputs["exInput9"],
+                        // reason: this.exInputs["exInput10"],
                     });
             }
             this.clearModalVal();

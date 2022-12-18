@@ -59,7 +59,7 @@
                     </button>
                     <button
                         v-if="currentMonth === day.month && day.flag === true"
-                        @click="viewCurrentDayModal($event)"
+                        @click="viewCurrentDayModal($event);hugadesu();"
                         type="button"
                         class="btn btn-warning btn-balance"
                         data-bs-toggle="modal"
@@ -202,7 +202,31 @@ export default {
         hogedesu(event) {
             let income = event.target.textContent;
             this.$store.dispatch("hogedesu", income);
-        }
+        },
+        hugadesu() {
+            let all = this.$store.state.all;
+            let ym = this.$store.getters.registYearMonth;
+            let d = this.$store.state.day;
+            if(!all[ym][d].ex){
+                // firebase
+                //     .database()
+                //     .ref("huga/" + ym + "/" + d + "/ex/")
+                //     .update({
+                //         food: 0,
+                //         daily: 0,
+                //         commu: 0,
+                //         utilities: 0,
+                //         medical: 0,
+                //         premium: 0,
+                //         rent: 0,
+                //         trans: 0,
+                //         common: 0,
+                //     });
+                return
+            }else{
+                this.$store.dispatch("hugadesu", all[ym][d].ex);
+            }
+        },
     },
     computed: {
         calendars() {
@@ -216,6 +240,9 @@ export default {
         },
         currentMonthModal() {
             return this.currentDate.format("M[月]");
+        },
+        displayDateHoge() {
+            return this.currentDate.format("D");
         },
     },
     mounted() {

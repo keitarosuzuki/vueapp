@@ -6,6 +6,18 @@ export default createStore({
         textCurrentYearMonthDay: "",
         all: {},
         indayo: "",
+        aaa: {
+            food: "0",
+            daily: "0",
+            commu: "0",
+            utilities: "0",
+            medical: "0",
+            premium: "0",
+            rent: "0",
+            trans: "0",
+            common: "0",
+        },
+        day: "",
     },
     getters: {
         registYearMonth(state) {
@@ -34,12 +46,33 @@ export default createStore({
         hogedesu(state, payload){
             state.indayo = payload
         },
+        hugadesu(state, payload){
+            state.aaa = payload
+        },
+        dayday(state, payload){
+            state.day = payload
+        },
+        modosu(state){
+            // Object.keys(state.aaa).forEach(function (key) {
+            //     state.aaa[key] = 0;
+            // });
+            state.aaa.food = "0"
+            state.aaa.daily = "0"
+            state.aaa.commu = "0"
+            state.aaa.utilities = "0"
+            state.aaa.medical = "0"
+            state.aaa.premium = "0"
+            state.aaa.rent = "0"
+            state.aaa.trans = "0"
+            state.aaa.common = "0"
+        }
     },
     actions: {
         viewCurrentDayModal({ commit }, { currentYearMonth, currentDay }) {
             // let date = currentYearMonth + currentDay + "日";
             let date = currentYearMonth + currentDay + "日";
             commit('viewCurrentDayModal', date)
+            commit('dayday', currentDay)
         },
         allHoge({ commit }, { allMoney }) {
             commit('allHoge', allMoney)
@@ -47,7 +80,10 @@ export default createStore({
         hogedesu({ commit }, income){
             let a = income.replace(' + ', '');
             commit('hogedesu', a)
-        }
+        },
+        hugadesu({ commit }, food){
+            commit('hugadesu', food)
+        },
     },
     modules: {
     }
