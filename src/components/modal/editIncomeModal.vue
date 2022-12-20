@@ -117,19 +117,20 @@ export default {
             this.flagCheckInput = false;
         },
         editIncomeVal() {
-            // if (this.checkValInput(this.valInput)) {
-            //     return false;
-            // }
             var result = confirm("更新しますか？");
             if (result) {
                 let registYM = this.registYearMonth;
                 let registD = this.registDay;
-                let money = this.valInput;
+
+                if(!this.valInput){
+                    this.valInput = this.indayo
+                }
+
                 firebase
                     .database()
                     .ref("huga/" + registYM + "/" + registD + "/in/")
                     .update({
-                        income: money,
+                        income: this.valInput,
                     });
                 this.clearModalVal();
             } else {
@@ -148,13 +149,6 @@ export default {
                     .remove();
             } else {
                 return;
-            }
-        },
-        checkValInput(input) {
-            var regexp = new RegExp(/^[0-9]+(\.[0-9]+)?$/);
-            if (!regexp.test(input) || input == 0) {
-                this.flagCheckInput = true;
-                return true;
             }
         },
     },

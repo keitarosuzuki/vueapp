@@ -250,6 +250,10 @@ export default {
             .database()
             .ref("huga")
             .on("value", (snapshot) => {
+                if(!snapshot.val()){
+                    alert("空です");
+                    return
+                }
                 this.hogeM = snapshot.val();
                 this.$store.dispatch("allHoge", {
                     allMoney: snapshot.val(),
