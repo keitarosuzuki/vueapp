@@ -52,20 +52,6 @@ export default createStore({
         dayday(state, payload){
             state.day = payload
         },
-        modosu(state){
-            // Object.keys(state.aaa).forEach(function (key) {
-            //     state.aaa[key] = 0;
-            // });
-            state.aaa.food = "0"
-            state.aaa.daily = "0"
-            state.aaa.commu = "0"
-            state.aaa.utilities = "0"
-            state.aaa.medical = "0"
-            state.aaa.premium = "0"
-            state.aaa.rent = "0"
-            state.aaa.trans = "0"
-            state.aaa.common = "0"
-        }
     },
     actions: {
         viewCurrentDayModal({ commit }, { currentYearMonth, currentDay }) {

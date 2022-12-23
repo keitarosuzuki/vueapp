@@ -25,7 +25,7 @@
                     <div class="modal-body">
                         <form class="form-floating" autocomplete="off">
                             <input
-                                type="text"
+                                type="number"
                                 class="form-control"
                                 :class="{
                                     'border border-danger border-5 rounded-3':

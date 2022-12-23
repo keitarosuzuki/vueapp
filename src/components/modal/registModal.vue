@@ -48,7 +48,7 @@
                             autocomplete="off"
                         >
                             <input
-                                type="text"
+                                type="number"
                                 class="form-control"
                                 :class="{
                                     'border border-danger border-5 rounded-3':
@@ -95,7 +95,7 @@
                                 :key="index"
                             >
                                 <input
-                                    type="text"
+                                    type="number"
                                     class="form-control"
                                     id="floatingInputValue"
                                     placeholder="{{title}}の金額を入力"

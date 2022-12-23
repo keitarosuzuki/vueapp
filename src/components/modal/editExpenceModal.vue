@@ -26,7 +26,7 @@
                     <div class="modal-body">
                         <form class="form-floating huga" autocomplete="off">
                             <input
-                                type="text"
+                                type="number"
                                 class="form-control"
                                 id="floatingInputValue"
                                 placeholder="食費 {{ aaa.food }}円を修正"
@@ -38,7 +38,7 @@
                         </form>
                         <form class="form-floating huga" autocomplete="off">
                             <input
-                                type="text"
+                                type="number"
                                 class="form-control"
                                 id="floatingInputValue"
                                 placeholder="日用品 {{ aaa.daily }}円を修正"
@@ -50,7 +50,7 @@
                         </form>
                         <form class="form-floating huga" autocomplete="off">
                             <input
-                                type="text"
+                                type="number"
                                 class="form-control"
                                 id="floatingInputValue"
                                 placeholder="通信費 {{ aaa.commu }}円を修正"
@@ -62,7 +62,7 @@
                         </form>
                         <form class="form-floating huga" autocomplete="off">
                             <input
-                                type="text"
+                                type="number"
                                 class="form-control"
                                 id="floatingInputValue"
                                 placeholder="水道光熱費 {{ aaa.utilities }}円を修正"
@@ -74,7 +74,7 @@
                         </form>
                         <form class="form-floating huga" autocomplete="off">
                             <input
-                                type="text"
+                                type="number"
                                 class="form-control"
                                 id="floatingInputValue"
                                 placeholder="医療費 {{ aaa.medical }}円を修正"
@@ -86,7 +86,7 @@
                         </form>
                         <form class="form-floating huga" autocomplete="off">
                             <input
-                                type="text"
+                                type="number"
                                 class="form-control"
                                 id="floatingInputValue"
                                 placeholder="保険料 {{ aaa.premium }}円を修正"
@@ -98,7 +98,7 @@
                         </form>
                         <form class="form-floating huga" autocomplete="off">
                             <input
-                                type="text"
+                                type="number"
                                 class="form-control"
                                 id="floatingInputValue"
                                 placeholder="家賃 {{ aaa.rent }}円を修正"
@@ -110,7 +110,7 @@
                         </form>
                         <form class="form-floating huga" autocomplete="off">
                             <input
-                                type="text"
+                                type="number"
                                 class="form-control"
                                 id="floatingInputValue"
                                 placeholder="交通費 {{ aaa.trans }}円を修正"
@@ -122,7 +122,7 @@
                         </form>
                         <form class="form-floating huga" autocomplete="off">
                             <input
-                                type="text"
+                                type="number"
                                 class="form-control"
                                 id="floatingInputValue"
                                 placeholder="その他出費 {{ aaa.common }}円を修正"
@@ -135,7 +135,7 @@
                         <!-- <div class="input-group">
                             <div class="form-floating">
                                 <input
-                                    type="text"
+                                    type="number"
                                     class="form-control hoge"
                                     id="floatingInputValue1"
                                     autocomplete="off"
@@ -148,7 +148,7 @@
                             </div>
                             <div class="form-floating">
                                 <input
-                                    type="text"
+                                    type="number"
                                     class="form-control hoge"
                                     id="floatingInputValue2"
                                     autocomplete="off"
@@ -240,7 +240,6 @@ export default {
             this.exInputs["exInput6"] = ""
             this.exInputs["exInput7"] = ""
             this.exInputs["exInput8"] = ""
-            this.$store.commit("modosu")
         },
         registerExpenceVal() {
             var result = confirm("更新しますか？");
